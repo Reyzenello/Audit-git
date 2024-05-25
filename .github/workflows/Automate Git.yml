@@ -1,0 +1,29 @@
+name: Commit changes every hour
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Runs every hour
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Git
+      run: |
+        git config --global user.name 'Reyzenello'
+        git config --global user.email 'riccardobruzzese98@gmail.com'
+
+    - name: Commit changes
+      run: |
+        git add -A
+        if ! git diff-index --quiet HEAD; then
+          git commit -m "Automated commit"
+          git push
+        else
+          echo "No changes to commit"
+        fi
+
